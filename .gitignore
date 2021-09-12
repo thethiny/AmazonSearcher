@@ -1,0 +1,8 @@
+.pytest*
+__pycache__
+pages
+*.json
+*.csv
+*.xls*
+*.exe
+AmazonData
