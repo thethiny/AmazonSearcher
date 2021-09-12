@@ -4,7 +4,8 @@ import os
 import random
 import re
 import unicodedata
-from typing import Any, Dict, List, Union
+from enum import Enum
+from typing import Any, Dict, List, Literal, Optional, TypedDict, Union
 
 from parsers.PCs import PCData
 
@@ -98,3 +99,70 @@ def get_pages(rows: Union[str, list], idx: int = None):
 
     br.close()
     br.quit()
+
+
+class DEPARTMENT(Enum):
+    COMPUTERS = "computers"
+
+
+class CATEGORY(Enum):
+    # Computers
+    LAPTOPS = 12050245031
+    COMPUTER_PARTS = 11497745031
+    #
+    SSD = 11497745031
+    EXTERNAL_STORAGE = 12050286031
+    INTERNAL_COMPONENTS = 15144684031
+    ##
+    COMPUTER_FANS = 12050274031
+    MOTHERBOARDS = 12050282031
+    GPU = 12050275031
+    CPU = 12050272031
+    PSU = 12050284031
+    RAM = 12050281031
+
+
+class SHIPPING(Enum):
+    SHIPPING_DOMESTIC = 20642115031
+    SHIPPING_INTERNATIONAL = 20642116031
+    SHIPPING_FULFILLED = 16258112031
+    DELIVERY_SAME_DAY = 15397663031
+    DELIVERY_NEXT_DAY = 15397664031
+    ITEM_OUTOFSTOCK = 12407978031
+
+
+class SORTING(Enum):
+    PRICE = "price-asc-rank"
+    PRICE_DESC = "price-desc-rank"
+    FEATURED = "relevanceblender"
+    REVIEWS = "review-rank"
+    DATE = "date-desc-rank"
+
+
+class RATING_FILTER(Enum):
+    STARS_ONE = 12407975031
+    STARS_TWO = 12407974031
+    STARS_THREE = 12407973031
+    STARS_FOUR = 12407972031
+
+
+# Types
+class DeliveryOptionsType(TypedDict):
+    domestic: Optional[Literal[SHIPPING.SHIPPING_DOMESTIC]]
+    international: Optional[Literal[SHIPPING.SHIPPING_INTERNATIONAL]]
+    verified: Optional[Literal[SHIPPING.SHIPPING_FULFILLED]]
+    same_day: Optional[Literal[SHIPPING.DELIVERY_SAME_DAY]]
+    next_day: Optional[Literal[SHIPPING.DELIVERY_NEXT_DAY]]
+    oos: Optional[Literal[SHIPPING.ITEM_OUTOFSTOCK]]
+
+
+class CategoryInfoType(TypedDict):
+    category: DEPARTMENT
+    subcategory: CATEGORY
+
+
+class SearchParamsType(TypedDict, total=False):
+    i: str  # Category
+    rh: str  # Filters
+    s: str  # Sort
+    k: str  # Keywords
